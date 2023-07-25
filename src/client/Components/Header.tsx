@@ -12,7 +12,8 @@ const Header = (props: any): JSX.Element => {
               className="h-5 w-5"
               fill="none"
               viewBox="0 0 24 24"
-              stroke="currentColor">
+              stroke="currentColor"
+            >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -44,7 +45,7 @@ const Header = (props: any): JSX.Element => {
           </ul> */}
         </div>
         <a className="btn btn-ghost text-white bg-primary normal-case text-xl">
-          ToadOS
+          BufoOS
         </a>
       </div>
       <div className="navbar-center hidden lg:flex">
