@@ -30,6 +30,14 @@ app.get(
   }
 );
 
+app.get(
+  '/api/fib-go/:value',
+  fibController.fibGo,
+  (req: Request, res: Response) => {
+    return res.status(200).json(res.locals);
+  }
+);
+
 app.use('/', (req: Request, res: Response) => {
   return res.status(404).json('Error: page not found');
 });

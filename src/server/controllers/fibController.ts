@@ -36,6 +36,7 @@ export const fibController = {
   },
 
   fibC: refract('fibonacci', 'fibonacci'),
+  fibGo: refract('fibonacciGo', 'fibonacci'),
   // fibAlt: async (
   //   { params: { value } }: Request,
   //   res: Response,
