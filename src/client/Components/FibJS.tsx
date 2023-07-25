@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { BenchmarkType, FibJSProps, FibResult } from '../../types';
 
 const FibJS = (props: FibJSProps): JSX.Element => {
-  //create state hooks for FibC where needed
   const [fibFetched, setFibFetched] = useState<boolean>(false);
   const [fibCFetched, setFibCFetched] = useState<boolean>(false);
   const [isloading, setIsLoading] = useState<boolean>(false);
