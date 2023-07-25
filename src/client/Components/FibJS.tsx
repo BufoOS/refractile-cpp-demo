@@ -43,48 +43,20 @@ const FibJS = (props: FibJSProps): JSX.Element => {
           setFibTime(timeTaken);
           setIsLoading(false);
           setFibFetched(true);
-          const newBenchmark: BenchmarkType = {
-            language: 'JS',
-            input: fibInput,
-            time: timeTaken
-          }
-          postBenchmark(newBenchmark)
         } else if (route === 'fib-c') {
           setFibCTime(timeTaken);
           setFibCIsLoading(false);
           setFibCFetched(true);
-          const newBenchmark: BenchmarkType = {
-            language: 'C',
-            input: fibInput,
-            time: timeTaken
-          }
-          postBenchmark(newBenchmark)
         } else if (route === 'fib-go') {
           setFibGoTime(timeTaken);
           setFibGoIsLoading(false);
           setFibGoFetched(true);
-          const newBenchmark: BenchmarkType = {
-            language: 'Golang',
-            input: fibInput,
-            time: timeTaken
-          }
-          postBenchmark(newBenchmark)
         }
       }
     } catch (e) {
       console.log(e);
     }
   };
-
-  const postBenchmark = async (newBenchmark: BenchmarkType) => {
-    await fetch('/api/fib/benchmark', {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newBenchmark)
-    })
-  }
 
   return (
     <div className="flex-col gap-3">
