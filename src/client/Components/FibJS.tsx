@@ -73,6 +73,7 @@ const FibJS = (props: FibJSProps): JSX.Element => {
         />
         <button className="btn btn-primary" onClick={() => {
           handleClick('fib-c');
+          handleClick('fib-go');          
           handleClick('fib-js');
         }}>
           Run Fibonacci
