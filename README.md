@@ -32,4 +32,4 @@ To run this project, make sure that you have the following dependencies installe
 
 After installing the above dependencies, install node packages by running `npm i`
 
-Then run the command `npm start` to build the front-end, comile the WebAssembly modules, and start the server.
+Then run the command `npm start` to build the front-end, compile the WebAssembly modules, and start the server.
