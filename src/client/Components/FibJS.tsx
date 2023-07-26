@@ -59,7 +59,7 @@ const FibJS = (props: FibJSProps): JSX.Element => {
   };
 
   return (
-    <div className="flex-col gap-3">
+    <div className="main-container">
       <h3>
         Click the button to calculate a big Fibonacci sequence in JavaScript, C++, and Go
       </h3>
@@ -215,7 +215,7 @@ const FibJS = (props: FibJSProps): JSX.Element => {
           </>
         )}
       </div>
-      
+
     </div>
 
 
