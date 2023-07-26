@@ -4,12 +4,15 @@ import { BenchmarkType, FibJSProps, FibResult } from '../../types';
 const FibJS = (props: FibJSProps): JSX.Element => {
   const [fibFetched, setFibFetched] = useState<boolean>(false);
   const [fibCFetched, setFibCFetched] = useState<boolean>(false);
+  const [fibGoFetched, setFibGoFetched] = useState<boolean>(false);
   const [isloading, setIsLoading] = useState<boolean>(false);
   const [fibCIsLoading, setFibCIsLoading] = useState<boolean>(false);
+  const [fibGoIsLoading, setFibGoIsLoading] = useState<boolean>(false);
   const [fibInput, setFibInput] = useState<number>(41);
   const [fibResult, setFibResult] = useState<number>(0);
   const [fibTime, setFibTime] = useState<number>(0);
   const [fibCTime, setFibCTime] = useState<number>(0);
+  const [fibGoTime, setFibGoTime] = useState<number>(0);
 
   const handleClick = async (route: string) => {
     if (isNaN(fibInput)) return;
@@ -19,6 +22,9 @@ const FibJS = (props: FibJSProps): JSX.Element => {
     } else if (route === 'fib-c') {
       setFibCIsLoading(true);
       setFibCFetched(false);
+    } else if (route === 'fib-go') {
+      setFibGoIsLoading(true);
+      setFibGoFetched(false);
     }
 
     const start: number = Date.now();
@@ -37,22 +43,14 @@ const FibJS = (props: FibJSProps): JSX.Element => {
           setFibTime(timeTaken);
           setIsLoading(false);
           setFibFetched(true);
-          const newBenchmark: BenchmarkType = {
-            language: 'JS',
-            input: fibInput,
-            time: timeTaken
-          }
-          postBenchmark(newBenchmark)
         } else if (route === 'fib-c') {
           setFibCTime(timeTaken);
           setFibCIsLoading(false);
           setFibCFetched(true);
-          const newBenchmark: BenchmarkType = {
-            language: 'C',
-            input: fibInput,
-            time: timeTaken
-          }
-          postBenchmark(newBenchmark)
+        } else if (route === 'fib-go') {
+          setFibGoTime(timeTaken);
+          setFibGoIsLoading(false);
+          setFibGoFetched(true);
         }
       }
     } catch (e) {
@@ -60,20 +58,10 @@ const FibJS = (props: FibJSProps): JSX.Element => {
     }
   };
 
-  const postBenchmark = async (newBenchmark: BenchmarkType) => {
-    await fetch('/api/fib/benchmark', {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newBenchmark)
-    })
-  }
-
   return (
-    <div className="flex-col gap-3">
+    <div className="main-container">
       <h3>
-        Click the button to calculate a big Fibonacci sequence in JavaScript and C++
+        Click the button to calculate a big Fibonacci sequence in JavaScript, C++, and Go
       </h3>
       <div className="flex gap-2">
         <input
@@ -85,6 +73,7 @@ const FibJS = (props: FibJSProps): JSX.Element => {
         />
         <button className="btn btn-primary" onClick={() => {
           handleClick('fib-c');
+          handleClick('fib-go');          
           handleClick('fib-js');
         }}>
           Run Fibonacci
@@ -132,10 +121,31 @@ const FibJS = (props: FibJSProps): JSX.Element => {
           </>
         )}
       </div>
+
+      <h2><strong>Go:</strong></h2>
+
+      <div className="py-4">
+        {fibGoIsLoading && (
+          <>
+            <div role="status" className="max-w-sm animate-pulse">
+              <div className="h-2 bg-primary rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+              <div className="h-2.5 bg-primary rounded-full dark:bg-gray-700 w-48 mb-4"></div>
+              <span className="sr-only">Loading...</span>
+            </div>
+          </>
+        )}
+
+        {fibGoFetched && (
+          <>
+            <p>{`The result of Go Fibonacci is: ${fibResult}`}</p>
+            <p>The time it took is: <strong>{fibGoTime / 1000}</strong> seconds</p>
+          </>
+        )}
+      </div>
       <h2><strong>Comparison:</strong></h2>
 
       <div className="py-4">
-      {fibCIsLoading && (
+      {fibCIsLoading && isloading && fibGoIsLoading && (
           <>
             <div role="status" className="max-w-sm animate-pulse">
               <div className="h-2 bg-primary rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
@@ -147,7 +157,25 @@ const FibJS = (props: FibJSProps): JSX.Element => {
 
         {fibCTime < fibTime && fibFetched && fibCFetched &&  (
           <>
-            <p>Fibonacci in C++ is faster by <strong>{(100 - ((fibCTime / fibTime) * 100)).toFixed(2)}%</strong></p>
+            <p>Fibonacci in C++ is faster than JS by <strong>{(100 - ((fibCTime / fibTime) * 100)).toFixed(2)}%</strong></p>
+          </>
+        )}
+      </div>
+
+      <div className="py-4">
+      {isloading && (
+          <>
+            <div role="status" className="max-w-sm animate-pulse">
+              <div className="h-2 bg-primary rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+              <div className="h-2.5 bg-primary rounded-full dark:bg-gray-700 w-48 mb-4"></div>
+              <span className="sr-only">Loading...</span>
+            </div>
+          </>
+        )}
+
+        {fibTime > fibGoTime && fibFetched && fibGoFetched && (
+          <>
+            <p>Fibonacci in Go is faster than JS by <strong>{(100 - ((fibGoTime / fibTime) * 100)).toFixed(2)}%</strong></p>
           </>
         )}
       </div>
@@ -165,7 +193,25 @@ const FibJS = (props: FibJSProps): JSX.Element => {
 
         {fibTime < fibCTime && fibFetched && fibCFetched && (
           <>
-            <p>Fibonacci in JS is faster by <strong>{(100 - ((fibTime / fibCTime) * 100)).toFixed(2)}%</strong></p>
+            <p>Fibonacci in JS is faster than C++ by <strong>{(100 - ((fibTime / fibCTime) * 100)).toFixed(2)}%</strong></p>
+          </>
+        )}
+      </div>
+
+      <div className="py-4">
+      {isloading && (
+          <>
+            <div role="status" className="max-w-sm animate-pulse">
+              <div className="h-2 bg-primary rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+              <div className="h-2.5 bg-primary rounded-full dark:bg-gray-700 w-48 mb-4"></div>
+              <span className="sr-only">Loading...</span>
+            </div>
+          </>
+        )}
+
+        {fibTime < fibGoTime && fibFetched && fibGoFetched && (
+          <>
+            <p>Fibonacci in JS is faster than Go by <strong>{(100 - ((fibTime / fibGoTime) * 100)).toFixed(2)}%</strong></p>
           </>
         )}
       </div>
