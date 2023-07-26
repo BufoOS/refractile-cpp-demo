@@ -157,7 +157,25 @@ const FibJS = (props: FibJSProps): JSX.Element => {
 
         {fibCTime < fibTime && fibFetched && fibCFetched &&  (
           <>
-            <p>Fibonacci in C++ is faster by <strong>{(100 - ((fibCTime / fibTime) * 100)).toFixed(2)}%</strong></p>
+            <p>Fibonacci in C++ is faster than JS by <strong>{(100 - ((fibCTime / fibTime) * 100)).toFixed(2)}%</strong></p>
+          </>
+        )}
+      </div>
+
+      <div className="py-4">
+      {isloading && (
+          <>
+            <div role="status" className="max-w-sm animate-pulse">
+              <div className="h-2 bg-primary rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+              <div className="h-2.5 bg-primary rounded-full dark:bg-gray-700 w-48 mb-4"></div>
+              <span className="sr-only">Loading...</span>
+            </div>
+          </>
+        )}
+
+        {fibTime > fibGoTime && fibFetched && fibGoFetched && (
+          <>
+            <p>Fibonacci in Go is faster than JS by <strong>{(100 - ((fibGoTime / fibTime) * 100)).toFixed(2)}%</strong></p>
           </>
         )}
       </div>
@@ -197,25 +215,7 @@ const FibJS = (props: FibJSProps): JSX.Element => {
           </>
         )}
       </div>
-
-      <div className="py-4">
-      {isloading && (
-          <>
-            <div role="status" className="max-w-sm animate-pulse">
-              <div className="h-2 bg-primary rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
-              <div className="h-2.5 bg-primary rounded-full dark:bg-gray-700 w-48 mb-4"></div>
-              <span className="sr-only">Loading...</span>
-            </div>
-          </>
-        )}
-
-        {fibTime > fibGoTime && fibFetched && fibGoFetched && (
-          <>
-            <p>Fibonacci in Go is faster by <strong>{(100 - ((fibGoTime / fibTime) * 100)).toFixed(2)}%</strong></p>
-          </>
-        )}
-      </div>
-
+      
     </div>
 
 
